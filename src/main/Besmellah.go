@@ -3,25 +3,16 @@ package main
 import "fmt"
 //import "runtime"
 import "../plugins"
-import "log"
 
 func main(){
 	
     si := plugins.SystemInfo{}
+    fm := plugins.FileManager{}
     ip := si.GetIPAddress()
     fmt.Println(ip)//chand ip nadarim?
     fmt.Println(si.GetHostname())
-
-    as, err := si.GetMACAddress()
-    if err != nil {
-        log.Fatal(err)
-    }
-    for _, a := range as {
-        fmt.Println(a)
-    }
-
     
-
-    
-
+    for _, file := range fm.GetFilesInPathRec("/home/mym/IdeaProjects"){
+        fmt.Println(file)
+    }
 }
