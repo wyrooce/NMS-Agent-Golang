@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery.js"></script>
+    <script src="functions.js"></script>
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+
+            $.post("http://localhost:9000/softwareList", function (data) {
+                console.debug("salaam");
+                console.debug(data);
+                var table = document.getElementById("tblSoftwareList");
+
+                var i;
+                for (i = 0; i < data.length; i++) {
+                    var row = table.insertRow(i+1);
+                    row.insertCell(0).innerHTML = i+1;
+                    row.insertCell(1).innerHTML = data[i].name
+                    row.insertCell(2).innerHTML = data[i].publisher
+                    row.insertCell(3).innerHTML = data[i].version
+                    row.insertCell(4).innerHTML = data[i].installDate
+                    row.insertCell(4).innerHTML = data[i].size
+                    row.insertCell(4).innerHTML = data[i].architecture
+
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <table id='tblSoftwareList'>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Publisher</th>
+            <th>Version</th>
+            <th>Install Date</th>
+            <th>Size</th>
+            <th>Architecture</th>
+        </tr>
+
+    </table>
+
+</body>
+
+
+
+</html>

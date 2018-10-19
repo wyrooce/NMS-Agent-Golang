@@ -23,20 +23,20 @@ type Interface struct{
 
 //SystemInfo overal information about the host
 type SystemInfo struct {
-	Hostname    string
-	OSName string
-	OSVersion string
-	OSArch string
-	ProductID string
-	SystemManufacturer string
-	CPU string
-	CoreNo string
-	MemorySize string
-	DiskSize string
-	DiskUsed string
-	Domain string
-	user          string
-	Interfaces 	  []Interface
+	Hostname    string `json:"hostname,omitempty"`
+	OSName string `json:"osname,omitempty"`
+	OSVersion string `json:"osversion,omitempty"`
+	OSArch string `json:"osarch,omitempty"`
+	ProductID string `json:"productid,omitempty"`
+	SystemManufacturer string `json:"manufacturer,omitempty"`
+	CPU string `json:"cpu,omitempty"`
+	CoreNo string `json:"coreno,omitempty"`
+	MemorySize string `json:"memorysize,omitempty"`
+	DiskSize string `json:"totaldisk,omitempty"`
+	DiskUsed string `json:"useddisk,omitempty"`
+	Domain string `json:"domain,omitempty"`
+	User          string `json:"user,omitempty"`
+	Interfaces 	  []Interface `json:"interface,omitempty"`
 }
 
 func systeminformation() string{
@@ -92,11 +92,12 @@ func Property() SystemInfo {
 	info.DiskSize = strconv.FormatUint(diskStat.Total/1024/1024, 10)
 	info.DiskUsed = strconv.FormatUint(diskStat.Used/1024/1024, 10)
 
-	fmt.Printf("%+#v\n-----------------\n", info)
-
-	return SystemInfo{}
+	//fmt.Printf("%+#v\n-----------------\n", info)
+	// fmt.Println(systeminfo)
+	fmt.Println("Property() result returned.")
+	return info
 }
-
+ 
 func dealwithErr(err error) {
 	if err != nil {
 		fmt.Println(err)

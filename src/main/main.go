@@ -52,6 +52,14 @@ func SystemInfoHndlr(w http.ResponseWriter, r *http.Request)  {
     json.NewEncoder(w).Encode(sysinfo)
 }
 
+//DeleteFileHndlr this fnc delete a file
+func DeleteFileHndlr(w http.ResponseWriter, r *http.Request)  {
+    fmt.Println("DeleteFileHndlr")
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    sysinfo := windows.Property()
+    json.NewEncoder(w).Encode(sysinfo)
+}
+
 
 func main()  {
     fmt.Println("Server is running...");
@@ -65,6 +73,7 @@ func main()  {
     
     route.HandleFunc("/fm-remove/{filename}", PersonHandler).Methods("Get")
     route.HandleFunc("/sysinfo", SystemInfoHndlr).Methods("Get")
+    route.HandleFunc("/delete", DeleteFileHndlr).Methods("Get")
 
     log.Fatal(http.ListenAndServe(":9000", route))
 }

@@ -240,8 +240,8 @@ func (fm *FileManager) GetName(filepath string) string {
 	defer file.Close()
 	return fi.Name()
 }
-
 func (fm *FileManager) Remove(filepath string) bool {
+
 	// delete file
 	si, e := os.Stat(filepath)
 	if os.IsExist(e) && si.IsDir() {

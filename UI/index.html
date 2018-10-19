@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        /* Style the tab */
+        .tab {
+            float: left;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            width: 20%;
+            height: 300px;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            display: block;
+            background-color: inherit;
+            color: black;
+            padding: 22px 16px;
+            width: 100%;
+            border: none;
+            outline: none;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        /* Create an active/current "tab button" class */
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            float: left;
+            padding: 0px 12px;
+            border: 1px solid #ccc;
+            width: 80%;
+            border-left: none;
+            height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Network Management System</h2>
+    <p>Click on the buttons inside the tabbed menu:</p>
+
+    <div class="tab">
+        <button class="tablinks" onclick="openModule(event, 'FileManager')" id="defaultOpen">File Manager</button>
+        <button class="tablinks" onclick="openModule(event, 'SoftwareManager')">Software Manager</button>
+        <button class="tablinks" onclick="openModule(event, 'SystemInformation')">System Information</button>
+        <button class="tablinks" onclick="openModule(event, 'Keylogger')">Keylogger</button>
+    </div>
+
+    <div id="FileManager" class="tabcontent">
+        <h3>File Manager</h3>
+
+        <table>
+            <tr>
+                <td><button>List OF Files</button></td>
+                <td><input type="text" id="listPath" /></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Delete: </td>
+                <td "><input type="text" id="deleteFile" /></td>
+                <td></td>
+                <td><button id="actDelete" onclick="actDeleteClk(event)"> Action </button></td>
+            </tr>
+
+            <tr>
+                <td>Property: </td>
+                <td><input type="file" /></td>
+                <td></td>
+                <td><button id="actProperty"> Action </button></td>
+            </tr>
+            <tr>
+                <td>Rename: </td>
+                <td><input id="renameOldFile" type="file" /></td>
+                <td><input id="renameNewFile" type="text" /></td>
+                <td><button id="actRename"> Action </button></td>
+            </tr>
+            <tr>
+                <td>Search: </td>
+                <td><input id="searchDirectory" type="file" /></td>
+                <td><input id="searchFile" type="text" /></td>
+                <td><button id="actSearch"> Action </button></td>
+            </tr>
+            <tr>
+                <td>Copy: </td>
+                <td><input id="copySrcFile" type="file" /></td>
+                <td><input id="copyDstFile" type="file" /></td>
+                <td><button id="actCopy"> Action </button></td>
+            </tr>
+            <tr>
+                <td>Move: </td>
+                <td><input id="moveSrcFile" type="file" /></td>
+                <td><input id="moveDstFile" type="file" /></td>
+                <td><button id="actMove" onclick="actMoveClk()"> Action </button></td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div id="SoftwareManager" class="tabcontent">
+        <h3>Software Manager</h3>
+        <button id="btnShowSoftwaresList" onclick="clkShowSoftwaresList()">Show Softwares List</button>
+    </div>
+
+    <div id="Keylogger" class="tabcontent">
+        <h3>Keylogger</h3>
+        <button id="keyloggerBtn" onclick="keyloggerStatus(event)">Start</button>
+        <textarea style="width: 100%; height: 100%"></textarea>
+    </div>
+
+    <div id="SystemInformation" class="tabcontent">
+        <h3 style="cursor: pointer">System Information</h3>
+        <p id="osname">OS Name: </p>
+        <p id="osversion">OS Version: </p>
+        <p id="osarch">OS Architecture: </p>
+        <p id="hostname">Host Name: </p>
+        <p id="productid">Product ID: </p>
+        <p id="manufacturer">Manufacturer: </p>
+        <p id="cpu">CPU Model: </p>
+        <p id="coreno">CPU Core Number: </p>
+        <p id="memorysize">Memory Size: </p>
+        <p id="totaldisk">Total Disk: </p>
+        <p id="useddisk">Used Disk: </p>
+        <p id="domain">Domain: </p>
+    </div>
+
+
+    <script>
+        $(document).ready(getSysInfo);
+
+
+        function getSysInfo(evt) {
+            $.getJSON('http://localhost:9000/sysinfo', function (info) {
+                $('#osname').append("<b>" + info.osname + "</b>")
+                $('#hostname').append("<b>" + info.hostname + "</b>")
+                $('#osversion').append("<b>" + info.osversion + "</b>")
+                $('#osarch').append("<b>" + info.osarch + "</b>")
+                $('#productid').append("<b>" + info.productid + "</b>")
+                $('#cpu').append("<b>" + info.cpu + "</b>")
+                $('#coreno').append("<b>" + info.coreno + "</b>")
+                $('#memorysize').append("<b>" + info.memorysize + "</b>")
+                $('#domain').append("<b>" + info.domain + "</b>")
+                $('#useddisk').append("<b>" + info.useddisk + "</b>")
+                $('#totaldisk').append("<b>" + info.totaldisk + "</b>")
+                $('#manufacturer').append("<b>" + info.manufacturer + "</b>")
+            });
+
+        }
+
+
+        function actDeleteClk(evt) {
+            var x = document.getElementById("deleteFile").value;
+            $.post("http://localhost:9000/delete",
+                {
+                    name: x
+                },
+                function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+        }
+
+        function clkShowSoftwaresList(event){
+            window.open("softwareList.html")
+        }
+
+        $('#deleteFile').change(function (event) {
+            var tmppath = URL.createObjectURL(event.target.files[0]);
+            $("img").fadeIn("fast").attr('src', tmppath);
+            var path = (window.URL || window.webkitURL).createObjectURL(tmppath);
+            console.log('path', path);
+        });
+
+        function keyloggerStatus(evt) {
+            var elm = $('#keyloggerBtn');
+            if (elm.text() == "Start") {
+                elm.text("Stop")
+            }
+            else {
+                elm.text("Start")
+            }
+        }
+
+        function openModule(evt, mdlName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            // tabcontent = $(".tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(mdlName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Get the element with id="defaultOpen" and click on it
+        $("#defaultOpen").click()        
+    </script>
+
+</body>
+
+</html>
